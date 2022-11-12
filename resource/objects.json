@@ -1,0 +1,14 @@
+Objects = {
+    "eqps":[
+        {"name": "EQP-01", "posX": 300, "posY": 0, "posZ": -800, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
+        {"name": "EQP-02", "posX": 300, "posY": 0, "posZ": -400, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
+        {"name": "EQP-03", "posX": 300, "posY": 0, "posZ": 0, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
+        {"name": "EQP-04", "posX": 300, "posY": 0, "posZ": 400, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
+        {"name": "EQP-05", "posX": 300, "posY": 0, "posZ": 800, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
+        {"name": "EQP-06", "posX": -300, "posY": 0, "posZ": -800, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
+        {"name": "EQP-07", "posX": -300, "posY": 0, "posZ": -400, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
+        {"name": "EQP-08", "posX": -300, "posY": 0, "posZ": 0, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
+        {"name": "EQP-09", "posX": -300, "posY": 0, "posZ": 400, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
+        {"name": "EQP-10", "posX": -300, "posY": 0, "posZ": 800, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"}
+    ]
+}

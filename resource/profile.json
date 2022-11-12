@@ -1,0 +1,34 @@
+Profile = {
+    "background": {
+        "color": 0xffffff
+    },
+    "floor": {
+        "sizeX": 5000,
+        "sizeZ": 5000,
+        "color": 0x999999,
+        "gridColor": 0x999999,
+        "gridHelperSize": 5000,
+        "gridHelperDivision": 20,
+        "gridHelperColor1": 0x000000,
+        "gridHelperColor2": 0x000000,
+        "gridHelperOpacity": 0.2
+    },
+    "camera":{
+        "fov": 45,
+        "posX": 2500,
+        "posY": 800,
+        "posZ": 2500,
+        "nearFrustum": 0.01,
+        "farFrustum": 100000
+    },
+    "box":{
+        "color": 0x215795,
+        "edgeColor": 0x030303,
+        "edgeThickness": 2,
+        "fontName": "IBM_Plex_Sans_KR_Regular.json",
+        "fontSize": 50,
+        "fontHeight": 1,
+        "textColor": 0x000730
+        // "textColor": 0x001740
+    }
+}
