@@ -1,4 +1,10 @@
 Objects = {
+    "columns":[
+        {"posX": -1200, "posZ": -1200, "sizeX": 70, "sizeZ": 70},
+        {"posX": -1200, "posZ": 1200, "sizeX": 70, "sizeZ": 70},
+        {"posX": 1200, "posZ": 1200, "sizeX": 70, "sizeZ": 70},
+        {"posX": 1200, "posZ": -1200, "sizeX": 70, "sizeZ": 70}
+    ],
     "eqps":[
         {"name": "EQP-01", "posX": 300, "posY": 0, "posZ": -800, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
         {"name": "EQP-02", "posX": 300, "posY": 0, "posZ": -400, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
