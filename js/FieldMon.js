@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 import { Frustum } from 'three';
-import { OrbitControls } from '../../threeMaster/examples/jsm/controls/OrbitControls.js';
-import { PLYExporter } from '../../threeMaster/examples/jsm/exporters/PLYExporter.js';
-import { GUI } from '../../threeMaster/examples/jsm/libs/lil-gui.module.min.js';
-import { FontLoader } from '../../threeMaster/examples/jsm/loaders/FontLoader.js';
-import { TextGeometry } from '../../threeMaster/examples/jsm/geometries/TextGeometry.js';
+import { OrbitControls } from './jsm/controls/OrbitControls.js';
+import { PLYExporter } from './jsm/exporters/PLYExporter.js';
+import { GUI } from './jsm/libs/lil-gui.module.min.js';
+import { FontLoader } from './jsm/loaders/FontLoader.js';
+import { TextGeometry } from './jsm/geometries/TextGeometry.js';
 
 let scene, camera, renderer, exporter, boxFont, controls;
 let profiles, objs;
