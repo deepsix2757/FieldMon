@@ -30,6 +30,7 @@ function init() {
     setGUI();
 
     loadObjects();
+    addColumns();
     addBoxes();
 }
 
@@ -262,4 +263,58 @@ function setPosTo(object, targetObj, direction){
         object.position.y = targetObj.position.y;
         object.position.z = targetObj.position.z - size.z/2;
     }
+}
+
+function addColumns(){
+    var idx;
+    for( idx in objs.columns ){
+        addColumn(objs.columns[idx].posX, objs.columns[idx].posZ, objs.columns[idx].sizeX, objs.columns[idx].sizeZ);
+    }
+}
+
+function addColumn(posX, posZ, sizeX, sizeZ){
+    var vertexShader = `
+        varying vec2 vUv;
+        void main()	{
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1);
+        }
+        `;
+
+    var fragmentShader = `
+        varying vec2 vUv;
+        uniform float thickness;
+        uniform vec3 color;
+        uniform vec3 edgeColor;
+        float edgeFactor(vec2 p){
+            vec2 grid = abs(fract(p - 0.5) - 0.5) / fwidth(p) / thickness;
+            return min(grid.x, grid.y);
+        }
+        void main() {
+            float a = clamp(edgeFactor(vUv), 0., 1.);
+            vec3 c = mix(edgeColor, color, a);
+            gl_FragColor = vec4(c, 0.35);
+        }
+        `;
+
+    var material = new THREE.ShaderMaterial({
+        uniforms: { 
+            thickness: {value: profiles.column.edgeThickness},
+            color: {value: new THREE.Color(profiles.column.color)},
+            edgeColor:{value: new THREE.Color(profiles.column.edgeColor)}
+        },
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader,
+        extensions: {derivatives: true},
+        transparent: true
+    });
+    const geometry = new THREE.BoxGeometry( sizeX, profiles.column.height, sizeZ );
+    const mesh = new THREE.Mesh( geometry, material );
+    mesh.position.x = posX;
+    mesh.position.y = profiles.column.height/2 + 10;
+    mesh.position.z = posZ;
+    
+    const group = new THREE.Group();
+    group.add( mesh );
+    scene.add( group );
 }

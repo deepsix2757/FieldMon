@@ -13,6 +13,13 @@ Profile = {
         "gridHelperColor2": 0x000000,
         "gridHelperOpacity": 0.2
     },
+    "column": {
+        "height": 500,
+        "color": 0xffffff,
+        "edgeColor": 0xaaaaaa,
+        "edgeThickness": 2,
+        "opacity": 0.03
+    },
     "camera":{
         "fov": 45,
         "posX": 2500,
