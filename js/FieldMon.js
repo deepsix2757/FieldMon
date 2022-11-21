@@ -10,46 +10,39 @@ let scene, camera, renderer, exporter, boxFont, controls;
 let profiles, objs;
 
 // Fontloader를 미리 구동시키기 위한 Setting, 미리 loading 되어 있어야 font 객체 재사용 가능 - 메모리 문제 해결
-var manager = new THREE.LoadingManager();
+const manager = new THREE.LoadingManager();
 manager.onLoad = function() { 
     // when all resources are loaded
     init();
     animate();
 }
 
-loadProfile();
-loadFont(profiles.box.fontName);
-
-function init() {
-    setCamera();
-    setScene();
-    setLight();
-    setGround();
-    setRenderer();
-    setControl();
-    setGUI();
-
-    loadObjects();
-    addColumns();
-    addBoxes();
-}
-
-function loadProfile(){
+const loadProfile = function(){
     profiles = JSON.parse(JSON.stringify(Profile));
 }
 
-function loadObjects(){
+const loadFont = function(fontName){
+    const fontloader = new FontLoader(manager);
+    boxFont = fontloader.load( './fonts/' + fontName, function(response){
+        boxFont = response;
+    });
+}
+
+loadProfile();
+loadFont(profiles.box.fontName);
+
+const loadObjects = function(){
     objs = JSON.parse(JSON.stringify(Objects));
 }
 
-function setScene(){
+const setScene = function(){
     scene = new THREE.Scene();
     scene.background = new THREE.Color( profiles.background.color );
     // scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 );
     exporter = new PLYExporter();
 }
 
-function addBoxes(objectName){
+const addBoxes = function(objectName){
     var idx;
     for( idx in objs.eqps ){
         addBox(objs.eqps[idx].name, objs.eqps[idx].posX, objs.eqps[idx].posY, objs.eqps[idx].posZ, 
@@ -57,8 +50,8 @@ function addBoxes(objectName){
     }
 }
 
-function addBox(name, posX, posY, posZ, sizeX, sizeY, sizeZ, floorFlag){
-    var vertexShader = `
+const addBox = function(name, posX, posY, posZ, sizeX, sizeY, sizeZ, floorFlag){
+    let vertexShader = `
         varying vec2 vUv;
         void main()	{
             vUv = uv;
@@ -66,7 +59,7 @@ function addBox(name, posX, posY, posZ, sizeX, sizeY, sizeZ, floorFlag){
         }
         `;
 
-    var fragmentShader = `
+    let fragmentShader = `
         varying vec2 vUv;
         uniform float thickness;
         uniform vec3 color;
@@ -82,7 +75,7 @@ function addBox(name, posX, posY, posZ, sizeX, sizeY, sizeZ, floorFlag){
         }
         `;
 
-    var material = new THREE.ShaderMaterial({
+    const material = new THREE.ShaderMaterial({
         uniforms: { 
             thickness: {value: profiles.box.edgeThickness},
             color: {value: new THREE.Color(profiles.box.color)},
@@ -115,15 +108,8 @@ function addBox(name, posX, posY, posZ, sizeX, sizeY, sizeZ, floorFlag){
     scene.add( group );
 }
 
-function loadFont(fontName){
-    const fontloader = new FontLoader(manager);
-    boxFont = fontloader.load( './fonts/' + fontName, function(response){
-        boxFont = response;
-    });
-}
-
-function addText(text, fontSize, fontHeight, posX, posY, posZ, floating, rotation, group){
-    var textGeometry = new TextGeometry( text, {
+const addText = function(text, fontSize, fontHeight, posX, posY, posZ, floating, rotation, group){
+    const textGeometry = new TextGeometry( text, {
             font: boxFont,
             size: fontSize,
             height: fontHeight,
@@ -133,8 +119,8 @@ function addText(text, fontSize, fontHeight, posX, posY, posZ, floating, rotatio
             bevelEnabled: false
         });
 
-    var textMaterial = new THREE.MeshPhongMaterial( { color: profiles.box.textColor} );
-    var mesh = new THREE.Mesh( textGeometry, textMaterial );
+    const textMaterial = new THREE.MeshPhongMaterial( { color: profiles.box.textColor} );
+    const mesh = new THREE.Mesh( textGeometry, textMaterial );
     mesh.position.x = posX;
     mesh.position.y = posY + floating;
     mesh.position.z = posZ;
@@ -143,7 +129,7 @@ function addText(text, fontSize, fontHeight, posX, posY, posZ, floating, rotatio
     else { group.add( mesh ); }
 }
 
-function setCamera(){
+const setCamera = function(){
     camera = new THREE.PerspectiveCamera( profiles.camera.fov, 
                                           window.innerWidth / window.innerHeight, 
                                           profiles.camera.nearFrustum, 
@@ -151,7 +137,7 @@ function setCamera(){
     camera.position.set( profiles.camera.posX, profiles.camera.posY, profiles.camera.posZ );
 }
 
-function setLight(){
+const setLight = function(){
     // 간접 조명
     const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
     hemiLight.position.set( 0, 200, 0 );
@@ -167,7 +153,7 @@ function setLight(){
     scene.add( directionalLight );
 }
 
-function setGround(){
+const setGround = function(){
     const ground = new THREE.Mesh( new THREE.PlaneGeometry( profiles.floor.sizeX, profiles.floor.sizeZ ), // 1 = 1cm
                                    new THREE.MeshPhongMaterial( { color: profiles.floor.gridColor, depthWrite: false } ) );
     ground.rotation.x = - Math.PI / 2;
@@ -183,7 +169,7 @@ function setGround(){
     scene.add( grid );
 }
 
-function setRenderer(){
+const setRenderer = function(){
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.setPixelRatio( window.devicePixelRatio );
@@ -192,36 +178,36 @@ function setRenderer(){
     document.body.appendChild( renderer.domElement );
 }
 
-function setControl(){
+const setControl = function(){
     controls = new OrbitControls( camera, renderer.domElement );
     controls.target.set( 0, 25, 0 );
     controls.update();
     window.addEventListener( 'resize', onWindowResize );
 }
 
-function setGUI(){
+const setGUI = function(){
     const gui = new GUI();
-    var GuiData = function() {
+    let GuiData = function() {
         this.Reset_View = function() { controls.reset(); };
     };
-    var guiData = new GuiData();
-    var folder = gui.addFolder("View");
+    const guiData = new GuiData();
+    const folder = gui.addFolder("View");
     folder.add(guiData, "Reset_View");
     gui.open();
 }
 
-function onWindowResize() {
+const onWindowResize = function() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-function animate() {
+const animate = function() {
     requestAnimationFrame( animate );
     renderer.render( scene, camera );
 }
 
-function setPosTo(object, targetObj, direction){
+const setPosTo = function(object, targetObj, direction){
     // targetObj.geometry.computeBoundingBox();
     // const size = targetObj.geometry.boundingBox.getSize();
     // console.log(size);
@@ -265,15 +251,15 @@ function setPosTo(object, targetObj, direction){
     }
 }
 
-function addColumns(){
+const addColumns = function(){
     var idx;
     for( idx in objs.columns ){
         addColumn(objs.columns[idx].posX, objs.columns[idx].posZ, objs.columns[idx].sizeX, objs.columns[idx].sizeZ);
     }
 }
 
-function addColumn(posX, posZ, sizeX, sizeZ){
-    var vertexShader = `
+const addColumn = function(posX, posZ, sizeX, sizeZ){
+    let vertexShader = `
         varying vec2 vUv;
         void main()	{
             vUv = uv;
@@ -281,7 +267,7 @@ function addColumn(posX, posZ, sizeX, sizeZ){
         }
         `;
 
-    var fragmentShader = `
+    let fragmentShader = `
         varying vec2 vUv;
         uniform float thickness;
         uniform vec3 color;
@@ -297,7 +283,7 @@ function addColumn(posX, posZ, sizeX, sizeZ){
         }
         `;
 
-    var material = new THREE.ShaderMaterial({
+    const material = new THREE.ShaderMaterial({
         uniforms: { 
             thickness: {value: profiles.column.edgeThickness},
             color: {value: new THREE.Color(profiles.column.color)},
@@ -317,4 +303,18 @@ function addColumn(posX, posZ, sizeX, sizeZ){
     const group = new THREE.Group();
     group.add( mesh );
     scene.add( group );
+}
+
+const init = function() {
+    setCamera();
+    setScene();
+    setLight();
+    setGround();
+    setRenderer();
+    setControl();
+    setGUI();
+
+    loadObjects();
+    addColumns();
+    addBoxes();
 }
