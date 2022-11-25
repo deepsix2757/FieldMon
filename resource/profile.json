@@ -2,6 +2,17 @@ Profile = {
     "background": {
         "color": 0xffffff
     },
+    "ceil": {
+        "height" : 800
+    },
+    "OHTRail": {
+        "color": 0x215795,
+        "edgeColor": 0x030303,
+        "edgeThickness": 2,
+        "opacity": 0.03,
+        "width": 35,
+        "height": 10
+    },
     "floor": {
         "sizeX": 5000,
         "sizeZ": 5000,
@@ -14,7 +25,7 @@ Profile = {
         "gridHelperOpacity": 0.2
     },
     "column": {
-        "height": 500,
+        "height": 800,
         "color": 0xffffff,
         "edgeColor": 0xaaaaaa,
         "edgeThickness": 2,
@@ -32,10 +43,10 @@ Profile = {
         "color": 0x215795,
         "edgeColor": 0x030303,
         "edgeThickness": 2,
+        "shaderOpacity": 1.0,
         "fontName": "IBM_Plex_Sans_KR_Regular.json",
         "fontSize": 50,
         "fontHeight": 1,
         "textColor": 0x000730
-        // "textColor": 0x001740
     }
 }

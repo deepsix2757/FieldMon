@@ -5,16 +5,30 @@ Objects = {
         {"posX": 1200, "posZ": 1200, "sizeX": 70, "sizeZ": 70},
         {"posX": 1200, "posZ": -1200, "sizeX": 70, "sizeZ": 70}
     ],
+    "OHTRails":[
+        {"fromTop": 50, "fromPosX": -800, "fromPosZ": 1700, "toPosX": -800, "toPosZ": -1700},
+        {"fromTop": 50, "fromPosX": -850, "fromPosZ": 1700, "toPosX": -850, "toPosZ": -1700},
+        {"fromTop": 50, "fromPosX": -400, "fromPosZ": 1700, "toPosX": -400, "toPosZ": -1700},
+        {"fromTop": 50, "fromPosX": -450, "fromPosZ": 1700, "toPosX": -450, "toPosZ": -1700},
+        {"fromTop": 50, "fromPosX": 200, "fromPosZ": 1700, "toPosX": 200, "toPosZ": -1700},
+        {"fromTop": 50, "fromPosX": 250, "fromPosZ": 1700, "toPosX": 250, "toPosZ": -1700},
+        {"fromTop": 50, "fromPosX": 800, "fromPosZ": 1700, "toPosX": 800, "toPosZ": -1700},
+        {"fromTop": 50, "fromPosX": 850, "fromPosZ": 1700, "toPosX": 850, "toPosZ": -1700},
+        {"fromTop": 50, "fromPosX": 865, "fromPosZ": 1650, "toPosX": -865, "toPosZ": 1650},
+        {"fromTop": 50, "fromPosX": 865, "fromPosZ": 1700, "toPosX": -865, "toPosZ": 1700},
+        {"fromTop": 50, "fromPosX": 865, "fromPosZ": -1650, "toPosX": -865, "toPosZ": -1650},
+        {"fromTop": 50, "fromPosX": 865, "fromPosZ": -1700, "toPosX": -865, "toPosZ": -1700}
+    ],
     "eqps":[
-        {"name": "EQP-01", "posX": 300, "posY": 0, "posZ": -800, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
-        {"name": "EQP-02", "posX": 300, "posY": 0, "posZ": -400, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
-        {"name": "EQP-03", "posX": 300, "posY": 0, "posZ": 0, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
-        {"name": "EQP-04", "posX": 300, "posY": 0, "posZ": 400, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
-        {"name": "EQP-05", "posX": 300, "posY": 0, "posZ": 800, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
-        {"name": "EQP-06", "posX": -300, "posY": 0, "posZ": -800, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
-        {"name": "EQP-07", "posX": -300, "posY": 0, "posZ": -400, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
-        {"name": "EQP-08", "posX": -300, "posY": 0, "posZ": 0, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
-        {"name": "EQP-09", "posX": -300, "posY": 0, "posZ": 400, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"},
-        {"name": "EQP-10", "posX": -300, "posY": 0, "posZ": 800, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "floorFlag": "Y"}
+        {"name": "EQP-01", "posX": 300, "posY": 0, "posZ": -800, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "degree": 0, "floorFlag": "Y"},
+        {"name": "EQP-02", "posX": 300, "posY": 0, "posZ": -400, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "degree": 0, "floorFlag": "Y"},
+        {"name": "EQP-03", "posX": 300, "posY": 0, "posZ": 0, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "degree": 0, "floorFlag": "Y"},
+        {"name": "EQP-04", "posX": 300, "posY": 0, "posZ": 400, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "degree": 0, "floorFlag": "Y"},
+        {"name": "EQP-05", "posX": 300, "posY": 0, "posZ": 800, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "degree": 0, "floorFlag": "Y"},
+        {"name": "EQP-06", "posX": -300, "posY": 0, "posZ": -800, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "degree": 0, "floorFlag": "Y"},
+        {"name": "EQP-07", "posX": -300, "posY": 0, "posZ": -400, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "degree": 0, "floorFlag": "Y"},
+        {"name": "EQP-08", "posX": -300, "posY": 0, "posZ": 0, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "degree": 0, "floorFlag": "Y"},
+        {"name": "EQP-09", "posX": -300, "posY": 0, "posZ": 400, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "degree": 0, "floorFlag": "Y"},
+        {"name": "EQP-10", "posX": -300, "posY": 0, "posZ": 800, "sizeX": 150, "sizeY": 200, "sizeZ": 300, "degree": 0, "floorFlag": "Y"}
     ]
 }

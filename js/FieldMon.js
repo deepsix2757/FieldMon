@@ -8,6 +8,45 @@ import { TextGeometry } from './jsm/geometries/TextGeometry.js';
 
 let scene, camera, renderer, exporter, boxFont, controls;
 let profiles, objs;
+let vertexShader = `
+varying vec2 vUv;
+void main()	{
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1);
+}
+`;
+
+let fragmentShader_100 = `
+varying vec2 vUv;
+uniform float thickness;
+uniform vec3 color;
+uniform vec3 edgeColor;
+float edgeFactor(vec2 p){
+    vec2 grid = abs(fract(p - 0.5) - 0.5) / fwidth(p) / thickness;
+    return min(grid.x, grid.y);
+}
+void main() {
+    float a = clamp(edgeFactor(vUv), 0., 1.);
+    vec3 c = mix(edgeColor, color, a);
+    gl_FragColor = vec4(c, 1.0);
+}
+`;
+
+let fragmentShader_035 = `
+varying vec2 vUv;
+uniform float thickness;
+uniform vec3 color;
+uniform vec3 edgeColor;
+float edgeFactor(vec2 p){
+    vec2 grid = abs(fract(p - 0.5) - 0.5) / fwidth(p) / thickness;
+    return min(grid.x, grid.y);
+}
+void main() {
+    float a = clamp(edgeFactor(vUv), 0., 1.);
+    vec3 c = mix(edgeColor, color, a);
+    gl_FragColor = vec4(c, 0.35);
+}
+`;
 
 // Fontloader를 미리 구동시키기 위한 Setting, 미리 loading 되어 있어야 font 객체 재사용 가능 - 메모리 문제 해결
 const manager = new THREE.LoadingManager();
@@ -38,7 +77,6 @@ const loadObjects = function(){
 const setScene = function(){
     scene = new THREE.Scene();
     scene.background = new THREE.Color( profiles.background.color );
-    // scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 );
     exporter = new PLYExporter();
 }
 
@@ -51,29 +89,6 @@ const addBoxes = function(objectName){
 }
 
 const addBox = function(name, posX, posY, posZ, sizeX, sizeY, sizeZ, floorFlag){
-    let vertexShader = `
-        varying vec2 vUv;
-        void main()	{
-            vUv = uv;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1);
-        }
-        `;
-
-    let fragmentShader = `
-        varying vec2 vUv;
-        uniform float thickness;
-        uniform vec3 color;
-        uniform vec3 edgeColor;
-        float edgeFactor(vec2 p){
-            vec2 grid = abs(fract(p - 0.5) - 0.5) / fwidth(p) / thickness;
-            return min(grid.x, grid.y);
-        }
-        void main() {
-            float a = clamp(edgeFactor(vUv), 0., 1.);
-            vec3 c = mix(edgeColor, color, a);
-            gl_FragColor = vec4(c, 1.0);
-        }
-        `;
 
     const material = new THREE.ShaderMaterial({
         uniforms: { 
@@ -82,7 +97,7 @@ const addBox = function(name, posX, posY, posZ, sizeX, sizeY, sizeZ, floorFlag){
             edgeColor:{value: new THREE.Color(profiles.box.edgeColor)}
         },
         vertexShader: vertexShader,
-        fragmentShader: fragmentShader,
+        fragmentShader: fragmentShader_100,
         extensions: {derivatives: true}
     });
     const geometry = new THREE.BoxGeometry( sizeX, sizeY, sizeZ );
@@ -208,10 +223,6 @@ const animate = function() {
 }
 
 const setPosTo = function(object, targetObj, direction){
-    // targetObj.geometry.computeBoundingBox();
-    // const size = targetObj.geometry.boundingBox.getSize();
-    // console.log(size);
-
     let boxObj = new THREE.Box3().setFromObject( object );
     let sizeObj = new THREE.Vector3();
     boxObj.getSize(sizeObj);
@@ -254,35 +265,12 @@ const setPosTo = function(object, targetObj, direction){
 const addColumns = function(){
     let idx;
     for( idx in objs.columns ){
-        addColumn(objs.columns[idx].posX, objs.columns[idx].posZ, objs.columns[idx].sizeX, objs.columns[idx].sizeZ);
+        addColumn(objs.columns[idx].posX, objs.columns[idx].posZ, 
+                  objs.columns[idx].sizeX, objs.columns[idx].sizeZ, objs.columns[idx].degree);
     }
 }
 
-const addColumn = function(posX, posZ, sizeX, sizeZ){
-    let vertexShader = `
-        varying vec2 vUv;
-        void main()	{
-            vUv = uv;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1);
-        }
-        `;
-
-    let fragmentShader = `
-        varying vec2 vUv;
-        uniform float thickness;
-        uniform vec3 color;
-        uniform vec3 edgeColor;
-        float edgeFactor(vec2 p){
-            vec2 grid = abs(fract(p - 0.5) - 0.5) / fwidth(p) / thickness;
-            return min(grid.x, grid.y);
-        }
-        void main() {
-            float a = clamp(edgeFactor(vUv), 0., 1.);
-            vec3 c = mix(edgeColor, color, a);
-            gl_FragColor = vec4(c, 0.35);
-        }
-        `;
-
+const addColumn = function(posX, posZ, sizeX, sizeZ, degree){
     const material = new THREE.ShaderMaterial({
         uniforms: { 
             thickness: {value: profiles.column.edgeThickness},
@@ -290,7 +278,7 @@ const addColumn = function(posX, posZ, sizeX, sizeZ){
             edgeColor:{value: new THREE.Color(profiles.column.edgeColor)}
         },
         vertexShader: vertexShader,
-        fragmentShader: fragmentShader,
+        fragmentShader: fragmentShader_035,
         extensions: {derivatives: true},
         transparent: true
     });
@@ -299,10 +287,53 @@ const addColumn = function(posX, posZ, sizeX, sizeZ){
     mesh.position.x = posX;
     mesh.position.y = profiles.column.height/2 + 10;
     mesh.position.z = posZ;
+
+    const group = new THREE.Group();
+    group.add( mesh );
+    scene.add( group );
+}
+
+const getAngle = function(x1, y1, x2, y2) {
+	let rad = Math.atan2(y2 - y1, x2 - x1);
+	return (rad * 180) / Math.PI ;
+}
+
+const addOHTRail = function(fromTop, fromPosX, fromPosZ, toPosX, toPosZ){
+    let degree = 0;
+    const material = new THREE.ShaderMaterial({
+        uniforms: { 
+            thickness: {value: profiles.OHTRail.edgeThickness},
+            color: {value: new THREE.Color(profiles.OHTRail.color)},
+            edgeColor:{value: new THREE.Color(profiles.OHTRail.edgeColor)}
+        },
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader_035,
+        extensions: {derivatives: true},
+        transparent: true
+    });
+    const geometry = new THREE.BoxGeometry( Math.sqrt(Math.pow(fromPosX - toPosX, 2) + Math.pow(fromPosZ - toPosZ, 2)), 
+                                            profiles.OHTRail.height, 
+                                            profiles.OHTRail.width );
+    const mesh = new THREE.Mesh( geometry, material );
+    mesh.position.x = fromPosX + (toPosX - fromPosX) / 2;
+    mesh.position.y = profiles.ceil.height - fromTop;
+    mesh.position.z = fromPosZ + (toPosZ - fromPosZ) / 2;
+    
+    degree = getAngle(toPosX, toPosZ, fromPosX, fromPosZ);
+    console.log(degree);
+    mesh.rotation.y = Math.PI / 180 * degree;
     
     const group = new THREE.Group();
     group.add( mesh );
     scene.add( group );
+}
+
+const addOHTRails = function() {
+    let idx;
+    for( idx in objs.OHTRails ){
+        addOHTRail(objs.OHTRails[idx].fromTop, objs.OHTRails[idx].fromPosX, 
+                   objs.OHTRails[idx].fromPosZ, objs.OHTRails[idx].toPosX, objs.OHTRails[idx].toPosZ);
+    }
 }
 
 const init = function() {
@@ -317,4 +348,5 @@ const init = function() {
     loadObjects();
     addColumns();
     addBoxes();
+    addOHTRails();
 }
