@@ -252,7 +252,7 @@ const setPosTo = function(object, targetObj, direction){
 }
 
 const addColumns = function(){
-    var idx;
+    let idx;
     for( idx in objs.columns ){
         addColumn(objs.columns[idx].posX, objs.columns[idx].posZ, objs.columns[idx].sizeX, objs.columns[idx].sizeZ);
     }
